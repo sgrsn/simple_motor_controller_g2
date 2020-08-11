@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>high_power_simple_motor_controller_g2</name>
+  <name>smc_g2_io</name>
   <version>0.0.0</version>
   <description>Pololu High-Power Simple Motor Controller G2 package</description>
   <maintainer email="sgrsn1711@gmail.com">Hidaka Sato</maintainer>
