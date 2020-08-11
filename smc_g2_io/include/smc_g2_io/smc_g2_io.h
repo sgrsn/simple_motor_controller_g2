@@ -26,3 +26,33 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies, 
 either expressed or implied, of the FreeBSD Project.
 *******************************************************************************/
+
+#ifndef SMC_G2_IO_H
+#define SMC_G2_IO_H
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <termios.h>
+
+class HighPowerG2
+{
+private:
+  int fd_;  // file descriptor
+public:
+  HighPowerG2();
+  HighPowerG2(const char * device, uint32_t baud_rate);
+  ~HighPowerG2();
+  int openSerialPort(const char * device, uint32_t baud_rate);
+  int writePort(const uint8_t * buffer, size_t size);
+  ssize_t readPort(uint8_t * buffer, size_t size);
+  int getValue(uint8_t variable_id, uint16_t * value);
+  
+  int getTargetSpeed(int16_t * value);
+  int getErrorStatus(uint16_t * value);
+  int exitSafeStart();
+  int setTargetSpeed(int speed);
+};
+
+#endif  // SMC_G2_IO_H

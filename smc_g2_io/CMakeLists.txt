@@ -146,6 +146,9 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
+add_executable(smc_g2_io src/smc_g2_io.cpp)
+target_link_libraries(smc_g2_io ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
