@@ -45,6 +45,8 @@ public:
   HighPowerG2(const char * device, uint32_t baud_rate);
   ~HighPowerG2();
   int openSerialPort(const char * device, uint32_t baud_rate);
+  void closePort();
+  bool hasFileDescriptor();
   int writePort(const uint8_t * buffer, size_t size);
   ssize_t readPort(uint8_t * buffer, size_t size);
   int getValue(uint8_t variable_id, uint16_t * value);

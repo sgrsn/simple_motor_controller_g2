@@ -28,6 +28,7 @@ either expressed or implied, of the FreeBSD Project.
 *******************************************************************************/
 
 #include "smc_g2_io/smc_g2_io.h"
+//#include <smc_g2_io.h>
 
 HighPowerG2::HighPowerG2()
 {
@@ -116,13 +117,24 @@ int HighPowerG2::openSerialPort(const char * device, uint32_t baud_rate)
   return fd;
 }
 
+void HighPowerG2::closePort()
+{
+  close(fd_);
+}
+
+bool HighPowerG2::hasFileDescriptor()
+{
+  if(fd_ < 0){ return false; }
+  else{ return true; }
+}
+
 // Writes bytes to the serial port from the buffer, size is the maximum bytes
 // The return value is 0: success, -1: failure.
 int HighPowerG2::writePort(const uint8_t * buffer, size_t size)
 {
   // Write a maximum of size bytes from the buffer pointed to by buffer
-  // to the file referenced by the file descriptor _fd.
-  ssize_t result = write(_fd, buffer, size);
+  // to the file referenced by the file descriptor fd_.
+  ssize_t result = write(fd_, buffer, size);
   if (result != (ssize_t)size)
   {
     perror("failed to write to port");
@@ -138,12 +150,12 @@ int HighPowerG2::writePort(const uint8_t * buffer, size_t size)
 // The received bytes are stored in buffer, size is the maximum bytes.
 // Returns the number of bytes successfully read into the buffer, or -1 if
 // there was an error reading.
-ssize_t HighPowerG2::readPort(uint8_t * buffer, size_t size);
+ssize_t HighPowerG2::readPort(uint8_t * buffer, size_t size)
 {
   size_t received = 0;
   while (received < size)
   {
-    ssize_t r = read(_fd, buffer + received, size - received);
+    ssize_t r = read(fd_, buffer + received, size - received);
     if (r < 0)
     {
       perror("failed to read from port");
@@ -164,10 +176,10 @@ ssize_t HighPowerG2::readPort(uint8_t * buffer, size_t size);
 int HighPowerG2::getValue(uint8_t variable_id, uint16_t * value)
 {
   uint8_t command[] = { 0xA1, variable_id };
-  int result = writePort(_fd, command, sizeof(command));
+  int result = writePort(command, sizeof(command));
   if (result) { return -1; }
   uint8_t response[2];
-  ssize_t received = readPort(_fd, response, sizeof(response));
+  ssize_t received = readPort(response, sizeof(response));
   if (received < 0) { return -1; }
   if (received != 2)
   {
@@ -182,7 +194,7 @@ int HighPowerG2::getValue(uint8_t variable_id, uint16_t * value)
 // Returns 0 on success, -1 on failure.
 int HighPowerG2::getTargetSpeed(int16_t * value)
 {
-  return getValue(_fd, 20, (uint16_t *)value);
+  return getValue(20, (uint16_t *)value);
 }
 
 // Gets a number where each bit represents a different error, and the
@@ -191,15 +203,15 @@ int HighPowerG2::getTargetSpeed(int16_t * value)
 // Returns 0 on success, -1 on failure.
 int HighPowerG2::getErrorStatus(uint16_t * value)
 {
-  return getValue(fd, 0, value);
+  return getValue(0, value);
 }
 
 // Sends the Exit Safe Start command, which is required to drive the motor.
 // Returns 0 on success, -1 on failure.
-int HighPowerG2::exitSafeStart();
+int HighPowerG2::exitSafeStart()
 {
   const uint8_t command = 0x83;
-  return writePort(_fd, &command, 1);
+  return writePort(&command, 1);
 }
 
 // Sets the SMC's target speed (-3200 to 3200).
@@ -220,5 +232,5 @@ int HighPowerG2::setTargetSpeed(int speed)
   command[1] = speed & 0x1F;
   command[2] = speed >> 5 & 0x7F;
  
-  return writePort(_fd, command, sizeof(command));
+  return writePort(command, sizeof(command));
 }
