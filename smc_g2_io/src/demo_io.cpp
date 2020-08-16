@@ -55,6 +55,13 @@ int main()
     printf("Setting target speed to %d.\n", new_speed);
     result = my_smc.setTargetSpeed(new_speed);
     if (result) { return 1; }
+
+    // sleep 500 msec
+    usleep(500000);
+
+    printf("Setting target speed to %d.\n", new_speed);
+    result = my_smc.setTargetSpeed(0);
+    if (result) { return 1; }
     
     my_smc.closePort();
     return 0;
