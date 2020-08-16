@@ -27,6 +27,7 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 *******************************************************************************/
 
+#include "ros/ros.h"
 #include "smc_g2_io/smc_g2_io.h"
 
 int main()
@@ -44,22 +45,22 @@ int main()
     uint16_t error_status;
     result = my_smc.getErrorStatus(&error_status);
     if (result) { return 1; }
-    printf("Error status: 0x%04x\n", error_status);
+    ROS_INFO("Error status: 0x%04x", error_status);
     
     int16_t target_speed;
     result = my_smc.getTargetSpeed(&target_speed);
     if (result) { return 1; }
-    printf("Target speed is %d.\n", target_speed);
+    ROS_INFO("Target speed is %d.", target_speed);
     
     int16_t new_speed = (target_speed <= 0) ? 3200 : 0;
-    printf("Setting target speed to %d.\n", new_speed);
+    ROS_INFO("Setting target speed to %d.", new_speed);
     result = my_smc.setTargetSpeed(new_speed);
     if (result) { return 1; }
 
-    // sleep 500 msec
+    ROS_INFO("Waiting 500 ms");
     usleep(500000);
 
-    printf("Setting target speed to %d.\n", new_speed);
+    ROS_INFO("Setting target speed to 0.");
     result = my_smc.setTargetSpeed(0);
     if (result) { return 1; }
     
