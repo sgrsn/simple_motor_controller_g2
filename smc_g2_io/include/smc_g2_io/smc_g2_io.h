@@ -35,7 +35,6 @@ either expressed or implied, of the FreeBSD Project.
 #include <unistd.h>
 #include <stdint.h>
 #include <termios.h>
-#include <ros/ros.h>
 
 class SimpleMotorControllerG2
 {
