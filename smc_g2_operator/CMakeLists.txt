@@ -9,6 +9,10 @@ add_compile_options(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  geometry_msgs
+  std_msgs
+  std_srvs
+  smc_g2_io
 )
 
 ## System dependencies are found with CMake's conventions
@@ -26,9 +30,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES smc_g2_operator
-#  CATKIN_DEPENDS roscpp
+  INCLUDE_DIRS include
+  LIBRARIES smc_g2_operator
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -37,9 +41,12 @@ catkin_package(
 ###########
 
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
+
+add_executable(operator_node src/operator_node.cpp src/smc_g2_operator.cpp)
+target_link_libraries(operator_node ${catkin_LIBRARIES})
 
 #############
 ## Install ##
