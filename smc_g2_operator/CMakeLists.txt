@@ -45,6 +45,13 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_library(smc_g2_operator
+  src/smc_g2_operator.cpp
+)
+target_link_libraries(smc_g2_operator
+  ${catkin_LIBRARIES}
+)
+
 add_executable(operator_node src/operator_node.cpp src/smc_g2_operator.cpp)
 target_link_libraries(operator_node ${catkin_LIBRARIES})
 
