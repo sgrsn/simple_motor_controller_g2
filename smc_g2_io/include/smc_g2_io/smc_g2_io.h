@@ -56,6 +56,7 @@ public:
   int getErrorStatus(uint16_t * value);
   int exitSafeStart();
   int setTargetSpeed(int speed);
+  int setMotorBrake(int brake);
 };
 
 #endif  // SMC_G2_IO_H

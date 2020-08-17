@@ -232,3 +232,13 @@ int SimpleMotorControllerG2::setTargetSpeed(int speed)
  
   return writePort(command, sizeof(command));
 }
+
+// Sets the motor brake (0 to 32).
+// Returns 0 on success, -1 on failure.
+int SimpleMotorControllerG2::setMotorBrake(int brake)
+{
+  uint8_t command[2];
+  command[0] = COMMAND_MOTOR_BRAKE;
+  command[1] = brake;
+  return writePort(command, sizeof(command));
+}
