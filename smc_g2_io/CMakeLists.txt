@@ -39,13 +39,6 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_library(smc_g2_io
-  src/smc_g2_io.cpp
-)
-target_link_libraries(smc_g2_io
-  ${catkin_LIBRARIES}
-)
-
 add_executable(demo_io src/demo_io.cpp src/smc_g2_io.cpp)
 target_link_libraries(demo_io ${catkin_LIBRARIES})
 
