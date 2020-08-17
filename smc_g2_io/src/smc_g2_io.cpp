@@ -41,7 +41,7 @@ SimpleMotorControllerG2::SimpleMotorControllerG2(const char * device, uint32_t b
 
 SimpleMotorControllerG2::~SimpleMotorControllerG2()
 {
-
+  closePort();
 }
 
 // Opens the specified serial port, sets it up for binary communication,
@@ -118,6 +118,7 @@ int SimpleMotorControllerG2::openSerialPort(const char * device, uint32_t baud_r
 
 void SimpleMotorControllerG2::closePort()
 {
+  ROS_INFO("Release the port.");
   close(fd_);
 }
 
