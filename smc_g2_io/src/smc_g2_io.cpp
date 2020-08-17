@@ -27,7 +27,7 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 *******************************************************************************/
 
-#include "smc_g2_io/smc_g2_io.h"
+#include <smc_g2_io/smc_g2_io.h>
 
 SimpleMotorControllerG2::SimpleMotorControllerG2()
 {
@@ -173,7 +173,7 @@ ssize_t SimpleMotorControllerG2::readPort(uint8_t * buffer, size_t size)
 // Returns 0 on success or -1 on failure.
 int SimpleMotorControllerG2::getValue(uint8_t variable_id, uint16_t * value)
 {
-  uint8_t command[] = { 0xA1, variable_id };
+  uint8_t command[] = { COMMAND_GET_VARIABLE, variable_id };
   int result = writePort(command, sizeof(command));
   if (result) { return -1; }
   uint8_t response[2];
@@ -208,7 +208,7 @@ int SimpleMotorControllerG2::getErrorStatus(uint16_t * value)
 // Returns 0 on success, -1 on failure.
 int SimpleMotorControllerG2::exitSafeStart()
 {
-  const uint8_t command = 0x83;
+  const uint8_t command = COMMAND_EXIT_SAFE_START;
   return writePort(&command, 1);
 }
 
@@ -220,12 +220,12 @@ int SimpleMotorControllerG2::setTargetSpeed(int speed)
  
   if (speed < 0)
   {
-    command[0] = 0x86; // Motor Reverse
+    command[0] = COMMAND_MOTOR_REVERSE; // Motor Reverse
     speed = -speed;
   }
   else
   {
-    command[0] = 0x85; // Motor Forward
+    command[0] = COMMAND_MOTOR_FORWARD; // Motor Forward
   }
   command[1] = speed & 0x1F;
   command[2] = speed >> 5 & 0x7F;
