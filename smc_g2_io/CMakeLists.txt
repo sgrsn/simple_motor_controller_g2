@@ -24,8 +24,8 @@ find_package(catkin REQUIRED COMPONENTS roscpp)
 ## catkin specific configuration ##
 ###################################
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES beginner_tutorials
+  INCLUDE_DIRS include
+  LIBRARIES smc_g2_io
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -37,6 +37,13 @@ catkin_package(
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
+)
+
+add_library(smc_g2_io
+  src/smc_g2_io.cpp
+)
+target_link_libraries(smc_g2_io
+  ${catkin_LIBRARIES}
 )
 
 add_executable(demo_io src/demo_io.cpp src/smc_g2_io.cpp)
