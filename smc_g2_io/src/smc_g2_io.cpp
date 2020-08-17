@@ -28,19 +28,18 @@ either expressed or implied, of the FreeBSD Project.
 *******************************************************************************/
 
 #include "smc_g2_io/smc_g2_io.h"
-//#include <smc_g2_io.h>
 
-HighPowerG2::HighPowerG2()
+SimpleMotorControllerG2::SimpleMotorControllerG2()
 {
 
 }
 
-HighPowerG2::HighPowerG2(const char * device, uint32_t baud_rate)
+SimpleMotorControllerG2::SimpleMotorControllerG2(const char * device, uint32_t baud_rate)
 {
   fd_ = openSerialPort(device, baud_rate);
 }
 
-HighPowerG2::~HighPowerG2()
+SimpleMotorControllerG2::~SimpleMotorControllerG2()
 {
 
 }
@@ -49,7 +48,7 @@ HighPowerG2::~HighPowerG2()
 // configures its read timeouts, and sets its baud rate.
 // device is the port name, baud_rate is the baud rate (usually select 9600).
 // Returns a non-negative file descriptor on success, or -1 on failure.
-int HighPowerG2::openSerialPort(const char * device, uint32_t baud_rate)
+int SimpleMotorControllerG2::openSerialPort(const char * device, uint32_t baud_rate)
 {
   int fd = open(device, O_RDWR | O_NOCTTY);
   if (fd == -1)
@@ -117,12 +116,12 @@ int HighPowerG2::openSerialPort(const char * device, uint32_t baud_rate)
   return fd;
 }
 
-void HighPowerG2::closePort()
+void SimpleMotorControllerG2::closePort()
 {
   close(fd_);
 }
 
-bool HighPowerG2::hasFileDescriptor()
+bool SimpleMotorControllerG2::hasFileDescriptor()
 {
   if(fd_ < 0){ return false; }
   else{ return true; }
@@ -130,7 +129,7 @@ bool HighPowerG2::hasFileDescriptor()
 
 // Writes bytes to the serial port from the buffer, size is the maximum bytes
 // The return value is 0: success, -1: failure.
-int HighPowerG2::writePort(const uint8_t * buffer, size_t size)
+int SimpleMotorControllerG2::writePort(const uint8_t * buffer, size_t size)
 {
   // Write a maximum of size bytes from the buffer pointed to by buffer
   // to the file referenced by the file descriptor fd_.
@@ -150,7 +149,7 @@ int HighPowerG2::writePort(const uint8_t * buffer, size_t size)
 // The received bytes are stored in buffer, size is the maximum bytes.
 // Returns the number of bytes successfully read into the buffer, or -1 if
 // there was an error reading.
-ssize_t HighPowerG2::readPort(uint8_t * buffer, size_t size)
+ssize_t SimpleMotorControllerG2::readPort(uint8_t * buffer, size_t size)
 {
   size_t received = 0;
   while (received < size)
@@ -173,7 +172,7 @@ ssize_t HighPowerG2::readPort(uint8_t * buffer, size_t size)
 
 // Reads a variable from the SMC.
 // Returns 0 on success or -1 on failure.
-int HighPowerG2::getValue(uint8_t variable_id, uint16_t * value)
+int SimpleMotorControllerG2::getValue(uint8_t variable_id, uint16_t * value)
 {
   uint8_t command[] = { 0xA1, variable_id };
   int result = writePort(command, sizeof(command));
@@ -192,7 +191,7 @@ int HighPowerG2::getValue(uint8_t variable_id, uint16_t * value)
 
 // Gets the target speed (-3200 to 3200).
 // Returns 0 on success, -1 on failure.
-int HighPowerG2::getTargetSpeed(int16_t * value)
+int SimpleMotorControllerG2::getTargetSpeed(int16_t * value)
 {
   return getValue(20, (uint16_t *)value);
 }
@@ -201,14 +200,14 @@ int HighPowerG2::getTargetSpeed(int16_t * value)
 // bit is 1 if the error is currently active.
 // See the user's guide for definitions of the different error bits.
 // Returns 0 on success, -1 on failure.
-int HighPowerG2::getErrorStatus(uint16_t * value)
+int SimpleMotorControllerG2::getErrorStatus(uint16_t * value)
 {
   return getValue(0, value);
 }
 
 // Sends the Exit Safe Start command, which is required to drive the motor.
 // Returns 0 on success, -1 on failure.
-int HighPowerG2::exitSafeStart()
+int SimpleMotorControllerG2::exitSafeStart()
 {
   const uint8_t command = 0x83;
   return writePort(&command, 1);
@@ -216,7 +215,7 @@ int HighPowerG2::exitSafeStart()
 
 // Sets the SMC's target speed (-3200 to 3200).
 // Returns 0 on success, -1 on failure.
-int HighPowerG2::setTargetSpeed(int speed)
+int SimpleMotorControllerG2::setTargetSpeed(int speed)
 {
   uint8_t command[3];
  

@@ -36,14 +36,14 @@ either expressed or implied, of the FreeBSD Project.
 #include <stdint.h>
 #include <termios.h>
 
-class HighPowerG2
+class SimpleMotorControllerG2
 {
 private:
-  int fd_;  // file descriptor
+  int fd_;  // file descriptor for smc
 public:
-  HighPowerG2();
-  HighPowerG2(const char * device, uint32_t baud_rate);
-  ~HighPowerG2();
+  SimpleMotorControllerG2();
+  SimpleMotorControllerG2(const char * device, uint32_t baud_rate);
+  ~SimpleMotorControllerG2();
   int openSerialPort(const char * device, uint32_t baud_rate);
   void closePort();
   bool hasFileDescriptor();
