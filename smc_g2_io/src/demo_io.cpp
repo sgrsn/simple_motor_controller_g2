@@ -35,7 +35,7 @@ int main()
     const char * device = "/dev/ttyACM0";
     uint32_t baud_rate = 9600;
 
-    SimpleMotorControlleG2 my_smc(device, baud_rate);
+    SimpleMotorControllerG2 my_smc(device, baud_rate);
  
     if(!my_smc.hasFileDescriptor()){ return 1; }
  
