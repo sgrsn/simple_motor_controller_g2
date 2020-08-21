@@ -31,7 +31,6 @@ either expressed or implied, of the FreeBSD Project.
 #define SMC_G2_OPERATOR_H
 
 #include <ros/ros.h>
-#include <geometry_msgs/Twist.h>
 #include <std_msgs/Int32.h>
 #include <std_msgs/Int8.h>
 #include <std_srvs/Trigger.h>
