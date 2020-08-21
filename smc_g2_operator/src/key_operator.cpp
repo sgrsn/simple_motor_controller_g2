@@ -100,7 +100,7 @@ int main(int argc, char **argv)
   "\n"
   "w/s : +/- motor velocity\n"
   "a/d : exit safe start\n"
-  "space : brake motor\n"
+  "space : stop motor\n"
   "\n"
   "CTRL-C : quit\n";
   ROS_INFO("%s", msg.c_str());
