@@ -1,0 +1,6 @@
+<launch>
+  <arg name="namespace" default="smc_g2"/>
+
+  <node name="operator_node" pkg="smc_g2_operator" type="operator_node" ns="$(arg namespace)"/>
+  <node name="key_operator" pkg="smc_g2_operator" type="key_operator" ns="$(arg namespace)" output="screen"/>
+</launch>
