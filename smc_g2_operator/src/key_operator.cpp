@@ -33,12 +33,13 @@ either expressed or implied, of the FreeBSD Project.
 #include <std_srvs/Trigger.h>
 
 // ASCII code table
-#define ESC 0x1b
-#define W   0x77
-#define X   0x78
-#define A   0x61
-#define D   0x64
-#define S   0x73
+#define ESC   0x1b
+#define SPACE 0x20
+#define W     0x77
+#define X     0x78
+#define A     0x61
+#define D     0x64
+#define S     0x73
 
 int getch(void)
 {
@@ -91,15 +92,15 @@ int main(int argc, char **argv)
   ros::Publisher smc_vel_pub = node_handle.advertise<std_msgs::Int32>("smc_vel", 10);
   ros::ServiceClient exit_safe_start_client = node_handle.serviceClient<std_srvs::Trigger>("exit_safe_start");
   std_msgs::Int32 smc_msg;
+  std_srvs::Trigger srv;
   std::string msg =
   "Moving around:\n"
   "        w\n"
   "   a    s    d\n"
-  "        x\n"
   "\n"
-  "w/x : +/- motor velocity\n"
-  "a/d : nothing\n"
-  "s : brake motor\n"
+  "w/s : +/- motor velocity\n"
+  "a/d : exit safe start\n"
+  "space : brake motor\n"
   "\n"
   "CTRL-C : quit\n";
   ROS_INFO("%s", msg.c_str());
@@ -113,14 +114,19 @@ int main(int argc, char **argv)
       if (c == W)
       {
         smc_msg.data += vel_step;
-      }
-      else if (c == X)
-      {
-        smc_msg.data -= vel_step;
+        
       }
       else if (c == S)
       {
+        smc_msg.data -= vel_step;
+      }
+      else if (c == SPACE)
+      {
         smc_msg.data  = 0;
+      }
+      else if (c == A || c == D)
+      {
+        exit_safe_start_client.call(srv);
       }
       else
       {
