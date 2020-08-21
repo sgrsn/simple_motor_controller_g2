@@ -110,15 +110,15 @@ int main(int argc, char **argv)
     if (kbhit())
     {
       char c = getch();
-      if (c == FORWARD)
+      if (c == W)
       {
         smc_msg.data += vel_step;
       }
-      else if (c == BACKWARD)
+      else if (c == X)
       {
         smc_msg.data -= vel_step;
       }
-      else if (c == STOPS)
+      else if (c == S)
       {
         smc_msg.data  = 0;
       }
