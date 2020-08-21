@@ -55,6 +55,9 @@ target_link_libraries(smc_g2_operator
 add_executable(operator_node src/operator_node.cpp src/smc_g2_operator.cpp)
 target_link_libraries(operator_node ${catkin_LIBRARIES})
 
+add_executable(key_operator src/key_operator.cpp)
+target_link_libraries(key_operator ${catkin_LIBRARIES})
+
 #############
 ## Install ##
 #############
