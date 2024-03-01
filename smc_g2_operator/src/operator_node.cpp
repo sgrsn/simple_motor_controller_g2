@@ -32,10 +32,15 @@ either expressed or implied, of the FreeBSD Project.
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "smc_operator");
+  ros::NodeHandle nh("~");
   SMCOperator smc_node;
-  smc_node.initSMC();
+  std::string serial_port;
+  nh.param<std::string>("serial_port", serial_port, "/dev/ttyACM0");
+  smc_node.initSMC(serial_port.c_str());
   smc_node.initSubscriber();
   smc_node.initServiceServer();
   ros::spin();
+  /*ROSが終了したときに出力を停止*/
+  smc_node.stopMotor();
   return 0;
 }

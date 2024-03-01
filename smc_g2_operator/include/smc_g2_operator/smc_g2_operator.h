@@ -51,6 +51,7 @@ public:
   void smcBrakeCallback(const std_msgs::Int8::ConstPtr &cmd);
   bool exitSafeStartMsgCallback(std_srvs::Trigger::Request &req,
                                std_srvs::Trigger::Response &res);
+  void stopMotor();
   void initSubscriber();
   void initServiceServer();
   int initSMC(const char * device = "/dev/ttyACM0", uint32_t baud_rate = 9600);

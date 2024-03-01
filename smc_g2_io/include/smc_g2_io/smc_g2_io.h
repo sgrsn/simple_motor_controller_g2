@@ -57,6 +57,8 @@ public:
   int exitSafeStart();
   int setTargetSpeed(int speed);
   int setMotorBrake(int brake);
+  int setMotorFullCoast();
+  int setMotorFullBrake();
 };
 
 #endif  // SMC_G2_IO_H

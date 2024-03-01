@@ -39,7 +39,7 @@ SMCOperator::~SMCOperator()
 
 void SMCOperator::smcVelocityCallback(const std_msgs::Int32::ConstPtr &cmd)
 {
-  ROS_INFO("Setting target speed to %d.", cmd->data);
+  //ROS_INFO("Setting target speed to %d.", cmd->data);
   int result = smc_.setTargetSpeed(cmd->data);
   if (result)
   {
@@ -72,6 +72,15 @@ bool SMCOperator::exitSafeStartMsgCallback(std_srvs::Trigger::Request &req,
   res.success = true;
   res.message = "Success to exit safe start";
   return true;
+}
+
+void SMCOperator::stopMotor()
+{
+  int result = smc_.setMotorFullBrake();
+  if (result)
+  {
+    ROS_ERROR("failed to set new target brake.");
+  }
 }
 
 void SMCOperator::initSubscriber()
@@ -110,7 +119,7 @@ int SMCOperator::initSMC(const char * device, uint32_t baud_rate)
     ROS_ERROR("Error status: 0x%04x", error_status);
     return 1;
   }
-  ROS_INFO("Error status: 0x%04x", error_status);
+  // ROS_INFO("Error status: 0x%04x", error_status);
   
   return 0;
 }

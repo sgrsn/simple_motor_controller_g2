@@ -242,3 +242,17 @@ int SimpleMotorControllerG2::setMotorBrake(int brake)
   command[1] = brake;
   return writePort(command, sizeof(command));
 }
+
+// Sets the motor to coast.
+// Returns 0 on success, -1 on failure.
+int SimpleMotorControllerG2::setMotorFullCoast()
+{
+  return setMotorBrake(0);
+}
+
+// Sets the motor to brake.
+// Returns 0 on success, -1 on failure.
+int SimpleMotorControllerG2::setMotorFullBrake()
+{
+  return setMotorBrake(32);
+}
